@@ -5,12 +5,47 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 
 class average : AppCompatActivity() {
+    lateinit var txtMessage: TextView;
+    var result:Double=0.0;
+    private lateinit var inputs: List<EditText>;
+    lateinit var txtNombre: TextView;
+
+    private fun getInputs(): List<EditText> {
+        val ids = mutableListOf<Int>(R.id.txtNota1, R.id.txtNota2, R.id.txtNota3, R.id.txtNota4, R.id.txtNota5);
+        var respond= mutableListOf<EditText>();
+        val idsIterator = ids.iterator()
+         while (idsIterator.hasNext()) {
+             respond.add(findViewById(idsIterator.next()));
+        }
+      return respond;
+    }
+    private fun averageResul(){
+
+        for (input in inputs){
+            result+=input.text.toString().toDouble();
+        }
+        result=result/inputs.size;
+        if(result>=6){
+            txtMessage.text= txtNombre.text.toString() + ", usted ha aprobado con un promedio de: " + result;
+        }else{
+            txtMessage.text= txtNombre.text.toString() + ", usted ha reprobado con un promedio de: " + result;
+
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_average)
+        inputs = getInputs();
+        val btnResult = findViewById<Button>(R.id.btnResult);
+        btnResult.setOnClickListener { averageResul() }
+        txtNombre= findViewById(R.id.txtName);
+        txtMessage=findViewById(R.id.txtViewResultado);
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.omenu,menu)
